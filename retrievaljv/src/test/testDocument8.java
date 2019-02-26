@@ -26,18 +26,17 @@ public class testDocument8 {
 
         // buat object invertedIndex
         InvertedIndex index = new InvertedIndex();
-        // tmbahkan document ke index
+        // tambahkan document ke index
         index.addNewDocument(doc1);
         index.addNewDocument(doc2);
         index.addNewDocument(doc3);
         // panggil fungsi search
         index.makeDictionary();
-        ArrayList<Posting> result = index.searchOneWord("computer");
-        // panggil fungsi search
-        ArrayList<Posting> result1 = index.searchOneWord("architecture");
-        // pangging fungsi instersect
+        ArrayList<Posting> result = index.searchOneWord("architecture");
+        ArrayList<Posting> result1 = index.searchOneWord("machine");
+        //panggil fungsi intersect
         ArrayList<Posting> join = index.intersection(result1, result);
-        // tampilkan isi document dan id-nya
+        //tampilkan isi document dan id nya
         for (int i = 0; i < join.size(); i++) {
             System.out.println("id_doc = " + join.get(i).getDocument().getId());
             System.out.println(join.get(i).getDocument().getContent());
