@@ -14,10 +14,8 @@ import model.Term;
 
 /**
  *
- * @author admin
+ * @author RedBorn
  */
-
-
 public class testTFIDF1 {
 
     public static void main(String[] args) {
