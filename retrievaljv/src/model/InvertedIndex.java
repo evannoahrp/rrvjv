@@ -263,7 +263,6 @@ public class InvertedIndex {
                 // urutkan term dictionary
                 Collections.sort(getDictionary());
             }
-
         }
 
     }
@@ -303,7 +302,20 @@ public class InvertedIndex {
      * @return
      */
     public int getDocumentFrequency(String term) {
-        return 0;
+        Term tempTerm = new Term(term);
+        // cek apakah term ada di dictionary
+        int index = Collections.binarySearch(dictionary, tempTerm);
+        if (index > 0) {
+            // term ada
+            // ambil ArrayList<Posting> dari object term
+            ArrayList<Posting> tempPosting = dictionary.get(index)
+                    .getPostingList();
+            // return ukuran posting list
+            return tempPosting.size();
+        } else {
+            // term tidak ada
+            return -1;
+        }
     }
 
     /**
@@ -313,6 +325,32 @@ public class InvertedIndex {
      * @return
      */
     public double getInverseDocumentFrequency(String term) {
-        return 0.0;
+        Term tempTerm = new Term(term);
+        // cek apakah term ada di dictionary
+        int index = Collections.binarySearch(dictionary, tempTerm);
+        if (index > 0) {
+            // term ada
+            // jumlah total dokumen
+            int N = listOfDocument.size();
+            // jumlah dokumen dengan term i
+            int ni = getDocumentFrequency(term);
+            // idf = log10(N/ni)
+            return Math.log10(N / ni);
+        } else {
+            // term tidak ada
+            // nilai idf = 0
+            return 0.0;
+        }
+    }
+
+    /**
+     * Fungsi untuk mencari term frequency
+     *
+     * @param term
+     * @param idDocument
+     * @return
+     */
+    public int getTermFrequency(String term, int idDocument) {
+        return 0;
     }
 }
