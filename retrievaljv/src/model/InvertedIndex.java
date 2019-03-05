@@ -351,6 +351,29 @@ public class InvertedIndex {
      * @return
      */
     public int getTermFrequency(String term, int idDocument) {
+        Document document = new Document();
+        document.setId(idDocument);
+        int pos = Collections.binarySearch(listOfDocument, document);
+        if (pos >= 0) {
+            ArrayList<Posting> tempPosting = listOfDocument.get(pos).getListofPosting();
+            Posting posting = new Posting();
+            posting.setTerm(term);
+            int postingIndex = Collections.binarySearch(tempPosting, posting);
+            if (postingIndex >= 0) {
+                return tempPosting.get(postingIndex).getNumberOfTerm();
+            }
+            return 0;
+        }
+
         return 0;
+    }
+
+    /**
+     * Fungsi untuk menghitung TF-IDF dari sebuah dokumen
+     *
+     * @param idDocument
+     */
+    public ArrayList<Posting> makeTFIDF(int idDocument) {
+        return null;
     }
 }

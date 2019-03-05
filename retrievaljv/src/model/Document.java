@@ -14,7 +14,7 @@ import java.util.StringTokenizer;
  *
  * @author RedBorn
  */
-public class Document {
+public class Document implements Comparable<Document> {
 
     private int id;
     private String content;
@@ -107,6 +107,11 @@ public class Document {
             }
         }
         return result;
+    }
+
+    @Override
+    public int compareTo(Document doc) {
+        return Integer.compare(this.id, doc.id);
     }
 
 }

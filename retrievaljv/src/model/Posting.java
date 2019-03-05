@@ -24,6 +24,9 @@ public class Posting implements Comparable<Posting> {
         this.document = document;
     }
 
+    Posting() {
+    }
+
     /**
      * @return the document
      */
