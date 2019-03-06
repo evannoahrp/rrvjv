@@ -374,6 +374,17 @@ public class InvertedIndex {
      * @param idDocument
      */
     public ArrayList<Posting> makeTFIDF(int idDocument) {
-        return null;
+        Document document = new Document();
+        document.setId(idDocument);
+        int pos = Collections.binarySearch(listOfDocument, document);
+        ArrayList<Posting> tempPosting = listOfDocument.get(pos).getListofPosting();
+        for (int i = 0; i < tempPosting.size(); i++) {
+            String tempString = tempPosting.get(i).getTerm();
+            int tf = tempPosting.get(i).getNumberOfTerm();
+            double idf = getInverseDocumentFrequency(tempString);
+            double weight = tf * idf;
+            tempPosting.get(i).setWeight(weight);
+        }
+        return tempPosting;
     }
 }
