@@ -331,9 +331,9 @@ public class InvertedIndex {
         if (index > 0) {
             // term ada
             // jumlah total dokumen
-            int N = listOfDocument.size();
+            double N = listOfDocument.size();
             // jumlah dokumen dengan term i
-            int ni = getDocumentFrequency(term);
+            double ni = getDocumentFrequency(term);
             // idf = log10(N/ni)
             return Math.log10(N / ni);
         } else {
