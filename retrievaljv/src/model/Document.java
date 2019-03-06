@@ -111,7 +111,7 @@ public class Document implements Comparable<Document> {
 
     @Override
     public int compareTo(Document doc) {
-        return Integer.compare(this.id, doc.id);
+        return id - doc.getId();
     }
 
 }
