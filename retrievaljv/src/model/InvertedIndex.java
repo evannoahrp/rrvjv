@@ -398,7 +398,15 @@ public class InvertedIndex {
      */
     public double getInnerProduct(ArrayList<Posting> p1,
             ArrayList<Posting> p2) {
-        return 0.0;
+        double temp = 0;
+        for (int i = 0; i < p1.size(); i++) {
+            for (int j = 0; j < p2.size(); j++) {
+                if (p1.get(i).getTerm().equals(p2.get(j).getTerm())) {
+                    temp += (p1.get(i).getWeight() * p2.get(j).getWeight());
+                }
+            }
+        }
+        return temp;
     }
 
     /**
@@ -408,6 +416,16 @@ public class InvertedIndex {
      * @return
      */
     public ArrayList<Posting> getQueryPosting(String query) {
-        return null;
+        ArrayList<Posting> tempPosting = new Document(query).getListofPosting();
+        for (int i = 0; i < tempPosting.size(); i++) {
+            for (int j = 0; j < dictionary.size(); j++) {
+                if (tempPosting.get(i).getTerm().equals(dictionary.get(j).getTerm())) {
+                    int tf = tempPosting.get(i).getNumberOfTerm();
+                    double idf = getInverseDocumentFrequency(tempPosting.get(i).getTerm());
+                    tempPosting.get(i).setWeight(tf * idf);
+                }
+            }
+        }
+        return tempPosting;
     }
 }
