@@ -6,12 +6,7 @@
 package model;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.function.Consumer;
 
 /**
  *
@@ -19,8 +14,8 @@ import java.util.function.Consumer;
  */
 public class InvertedIndex {
 
-    private ArrayList<Document> listOfDocument = new ArrayList<Document>();
-    private ArrayList<Term> dictionary = new ArrayList<Term>();
+    private ArrayList<Document> listOfDocument = new ArrayList<>();
+    private ArrayList<Term> dictionary = new ArrayList<>();
 
     public InvertedIndex() {
     }
@@ -32,16 +27,15 @@ public class InvertedIndex {
     public ArrayList<Posting> getUnsortedPostingList() {
         // cek untuk term yang muncul lebih dari 1 kali
         // siapkan posting List
-        ArrayList<Posting> list = new ArrayList<Posting>();
+        ArrayList<Posting> list = new ArrayList<>();
         // buat node Posting utk listofdocument
         for (int i = 0; i < getListOfDocument().size(); i++) {
             // buat listOfTerm dari document ke -i
             String[] termResult = getListOfDocument().get(i).getListofTerm();
             // loop sebanyak term dari document ke i
-            for (int j = 0; j < termResult.length; j++) {
+            for (String termResult1 : termResult) {
                 // buat object tempPosting
-                Posting tempPosting = new Posting(termResult[j],
-                        getListOfDocument().get(i));
+                Posting tempPosting = new Posting(termResult1, getListOfDocument().get(i));
                 // cek kemunculan term
                 list.add(tempPosting);
             }
@@ -52,7 +46,7 @@ public class InvertedIndex {
     public ArrayList<Posting> getUnsortedPostingListWithTermNumber() {
         // cek untuk term yang muncul lebih dari 1 kali
         // siapkan posting List
-        ArrayList<Posting> list = new ArrayList<Posting>();
+        ArrayList<Posting> list = new ArrayList<>();
         // buat node Posting utk listofdocument
         for (int i = 0; i < getListOfDocument().size(); i++) {
             // buat listOfTerm dari document ke -i
@@ -71,7 +65,7 @@ public class InvertedIndex {
 
     public ArrayList<Posting> getSortedPostingList() {
         // siapkan posting List
-        ArrayList<Posting> list = new ArrayList<Posting>();
+        ArrayList<Posting> list = new ArrayList<>();
         // panggil list yang belum terurut
         list = this.getUnsortedPostingList();
         // urutkan
@@ -81,7 +75,7 @@ public class InvertedIndex {
 
     public ArrayList<Posting> getSortedPostingListWithTermNumber() {
         // siapkan posting List
-        ArrayList<Posting> list = new ArrayList<Posting>();
+        ArrayList<Posting> list = new ArrayList<>();
         // panggil list yang belum terurut
         list = this.getUnsortedPostingListWithTermNumber();
         // urutkan
@@ -99,7 +93,7 @@ public class InvertedIndex {
         // buat index/dictionary
 //        makeDictionary();
         String tempQuery[] = query.split(" ");
-        ArrayList<Posting> result = new ArrayList<Posting>();
+        ArrayList<Posting> result = new ArrayList<>();
         for (int i = 0; i < tempQuery.length; i++) {
             String string = tempQuery[i];
             if (i == 0) {
@@ -372,6 +366,7 @@ public class InvertedIndex {
      * Fungsi untuk menghitung TF-IDF dari sebuah dokumen
      *
      * @param idDocument
+     * @return 
      */
     public ArrayList<Posting> makeTFIDF(int idDocument) {
         Document document = new Document();
