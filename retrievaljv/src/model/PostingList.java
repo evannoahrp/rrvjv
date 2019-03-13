@@ -9,10 +9,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
-import java.util.Spliterator;
 import java.util.function.Consumer;
-import java.util.function.Predicate;
-import java.util.stream.Stream;
 
 /**
  *
@@ -20,7 +17,7 @@ import java.util.stream.Stream;
  */
 public class PostingList {
 
-    private List<Posting> postingList = new List<Posting>() {
+    private final List<Posting> postingList = new List<Posting>() {
         @Override
         public void forEach(Consumer<? super Posting> action) {
             List.super.forEach(action); //To change body of generated methods, choose Tools | Templates.

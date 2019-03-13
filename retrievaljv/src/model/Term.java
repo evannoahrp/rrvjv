@@ -14,7 +14,7 @@ import java.util.ArrayList;
 public class Term implements Comparable<Term> {
 
     private String term;
-    private ArrayList<Posting> postingList = new ArrayList<Posting>();
+    private ArrayList<Posting> postingList = new ArrayList<>();
 
     public Term(String term) {
         this.term = term;
