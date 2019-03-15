@@ -494,6 +494,16 @@ public class InvertedIndex {
      * @return
      */
     public ArrayList<SearchingResult> searchCosineSimilarity(String query) {
-        return null;
+        ArrayList<Posting> queryPostingList = getQueryPosting(query);
+        ArrayList<SearchingResult> searchingList = new ArrayList<>();
+        for (int i = 0; i < listOfDocument.size(); i++) {
+            ArrayList<Posting> tempDocWeight = makeTFIDF(i+1);
+            double temp = getCosineSimilarity(queryPostingList, tempDocWeight);
+            SearchingResult doc = new SearchingResult(temp, listOfDocument.get(i));
+            searchingList.add(doc);
+        }
+        Collections.sort(searchingList);
+        Collections.reverse(searchingList);
+        return searchingList;
     }
 }
