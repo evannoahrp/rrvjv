@@ -484,7 +484,49 @@ public class InvertedIndex {
      * @return
      */
     public ArrayList<SearchingResult> searchTFIDF(String query) {
-        return null;
+        ArrayList<Posting> queryPostingList = getQueryPosting(query);
+        ArrayList<SearchingResult> searchingList = new ArrayList<>();
+        double lengthQuery = getLengthOfPosting(queryPostingList);
+        for (int i = 0; i < queryPostingList.size(); i++) {
+            double similarityQuery = 0;
+            similarityQuery = queryPostingList.get(i).getWeight() / lengthQuery;
+            queryPostingList.get(i).setWeight(similarityQuery);
+        }
+
+        for (int i = 0; i < listOfDocument.size(); i++) {
+            ArrayList<Posting> tempDocWeight = makeTFIDF(i + 1);
+
+            ArrayList<Posting> tempDocWeightTest = new ArrayList<>();
+            for (int j = 0; j < queryPostingList.size(); j++) {
+                for (int k = 0; k < tempDocWeight.size(); k++) {
+                    if (queryPostingList.get(j).getTerm().equals(tempDocWeight.get(k).getTerm())) {
+                        Posting temp = tempDocWeight.get(k);
+                        tempDocWeightTest.add(temp);
+                        break;
+                    }
+                }
+            }
+
+            double lengthDoc = getLengthOfPosting(tempDocWeightTest);
+            for (int j = 0; j < tempDocWeightTest.size(); j++) {
+                double newWeight = tempDocWeightTest.get(j).getWeight() / lengthDoc;
+                tempDocWeightTest.get(j).setWeight(newWeight);
+            }
+            double similarity = 0;
+            for (int j = 0; j < queryPostingList.size(); j++) {
+                for (int k = 0; k < tempDocWeightTest.size(); k++) {
+                    if (queryPostingList.get(j).getTerm().equals(tempDocWeightTest.get(k).getTerm())) {
+                        similarity += queryPostingList.get(j).getWeight() * tempDocWeightTest.get(k).getWeight();
+                    }
+                }
+            }
+            SearchingResult doc = new SearchingResult(similarity, listOfDocument.get(i));
+            searchingList.add(doc);
+        }
+
+        Collections.sort(searchingList);
+        Collections.reverse(searchingList);
+        return searchingList;
     }
 
     /**
@@ -497,9 +539,9 @@ public class InvertedIndex {
         ArrayList<Posting> queryPostingList = getQueryPosting(query);
         ArrayList<SearchingResult> searchingList = new ArrayList<>();
         for (int i = 0; i < listOfDocument.size(); i++) {
-            ArrayList<Posting> tempDocWeight = makeTFIDF(i+1);
-            double temp = getCosineSimilarity(queryPostingList, tempDocWeight);
-            SearchingResult doc = new SearchingResult(temp, listOfDocument.get(i));
+            ArrayList<Posting> tempDocWeight = makeTFIDF(i + 1);
+            double similarity = getCosineSimilarity(queryPostingList, tempDocWeight);
+            SearchingResult doc = new SearchingResult(similarity, listOfDocument.get(i));
             searchingList.add(doc);
         }
         Collections.sort(searchingList);
