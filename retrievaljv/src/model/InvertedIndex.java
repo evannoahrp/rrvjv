@@ -450,31 +450,26 @@ public class InvertedIndex {
      * @return
      */
     public double getCosineSimilarity(ArrayList<Posting> posting,
-            ArrayList<Posting> posting1) {
-        double[] arr1 = new double[posting.size()];
-        double[] arr2 = new double[posting.size()];
-        double temp1 = 0;
-        double temp2 = 0;
-        double temp3 = 0;
+            ArrayList<Posting> posting1){
+        // menghitung inner product dari 2 posting
+        double innerProduct = getInnerProduct(posting, posting1);
+        // menginisialisasi tempPost = 0
+        double tempPost = 0;
+        // menginisialisasi tempQuery = 0
+        double tempQuery = 0;
+        // loop sebanyak posting 
         for (int i = 0; i < posting.size(); i++) {
-            boolean bln = true;
-            arr1[i] = posting.get(i).getWeight();
-            for (int j = 0; j < posting1.size(); j++) {
-                if (posting.get(i).getTerm().equals(posting1.get(j).getTerm())) {
-                    arr2[i] = posting.get(i).getWeight();
-                    bln = false;
-                }
-            }
-            if (bln) {
-                arr2[i] = 0;
-            }
+            // menjumlahkan hasil kuadrat bobot posting
+            tempQuery = tempQuery+Math.pow(posting.get(i).getWeight(), 2);            
+        }       
+        for (int i = 0; i < posting1.size(); i++) {
+            // menjumlahkan hasil kuadrat bobot posting1
+            tempPost = tempPost + Math.pow(posting1.get(i).getWeight(), 2);
         }
-        for (int i = 0; i < arr1.length; i++) {
-            temp1 += arr1[i] * arr2[i];
-            temp2 += Math.pow(arr1[i], 2);
-            temp3 += Math.pow(arr2[i], 2);
-        }
-        return temp1 / Math.sqrt(temp2 * temp3);
+        // menghitung akar dari tempPost * tempQuery
+        double sqrt = Math.sqrt(tempPost * tempQuery);
+        // mengembalikan innerProduct dibagi sqrt        
+        return innerProduct / sqrt;
     }
 
     /**
