@@ -450,25 +450,17 @@ public class InvertedIndex {
      * @return
      */
     public double getCosineSimilarity(ArrayList<Posting> posting,
-            ArrayList<Posting> posting1){
-        // menghitung inner product dari 2 posting
+            ArrayList<Posting> posting1) {
         double innerProduct = getInnerProduct(posting, posting1);
-        // menginisialisasi tempPost = 0
         double tempPost = 0;
-        // menginisialisasi tempQuery = 0
         double tempQuery = 0;
-        // loop sebanyak posting 
         for (int i = 0; i < posting.size(); i++) {
-            // menjumlahkan hasil kuadrat bobot posting
-            tempQuery = tempQuery+Math.pow(posting.get(i).getWeight(), 2);            
-        }       
+            tempQuery = tempQuery + Math.pow(posting.get(i).getWeight(), 2);
+        }
         for (int i = 0; i < posting1.size(); i++) {
-            // menjumlahkan hasil kuadrat bobot posting1
             tempPost = tempPost + Math.pow(posting1.get(i).getWeight(), 2);
         }
-        // menghitung akar dari tempPost * tempQuery
         double sqrt = Math.sqrt(tempPost * tempQuery);
-        // mengembalikan innerProduct dibagi sqrt        
         return innerProduct / sqrt;
     }
 
