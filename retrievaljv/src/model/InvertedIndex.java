@@ -18,6 +18,9 @@ public class InvertedIndex {
     private ArrayList<Document> listOfDocument = new ArrayList<>();
     private ArrayList<Term> dictionary = new ArrayList<>();
 
+    private ArrayList<Cluster> listOfCluster = new ArrayList<>();
+    public static final int NUMBER_OF_DOCUMENT_CLUSTER = 2;
+
     public InvertedIndex() {
     }
 
@@ -559,5 +562,69 @@ public class InvertedIndex {
             this.addNewDocument(doc);
         }
         this.makeDictionaryWithTermNumber();
+    }
+
+    /**
+     * @return the cluster
+     */
+    public ArrayList<Cluster> getListOfCluster() {
+        return listOfCluster;
+    }
+
+    /**
+     * @param cluster the cluster to set
+     */
+    public void setListOfCluster(ArrayList<Cluster> cluster) {
+        this.listOfCluster = cluster;
+    }
+
+    /**
+     * Fungsi penyiapan pasting dari seluruh document Asumsi document sudah di
+     * stemming
+     */
+    public void preClustering() {
+        // baca seluruh document
+        for (int i = 0; i < listOfDocument.size(); i++) {
+            // baca idDoc
+            int idDoc = listOfDocument.get(i).getId();
+            // buat posting dengan nilai TF-IDFnya
+            listOfDocument.get(i).setListOfClusteringPosting(makeTFIDF(idDoc));
+
+        }
+    }
+
+    /**
+     * Fungsi untuk clustering
+     */
+    public void clustering() {
+        // buat arraylistofCluster sejumlah kelompok yang sudah ditentukan
+        // dan tetapkan N document awal sebagai pusat cluster
+        for (int i = 0; i < NUMBER_OF_DOCUMENT_CLUSTER; i++) {
+            Cluster cluster = new Cluster(i);
+            cluster.setCenter(listOfDocument.get(i));
+        }
+
+        // lalu lakukan penghitungan similarity antara dokumen 
+        // dengan masing-masing center
+        for (int i = 0; i < listOfDocument.size(); i++) {
+            // per epoch
+            Document doc = listOfDocument.get(i);
+            // hitung similarity
+            ArrayList<DocumentToClusterSimilarity> listOfSimilarity
+                    = new ArrayList<>();
+            for (int j = 0; j < listOfCluster.size(); j++) {
+                double sim = getCosineSimilarity(listOfDocument.get(i).getListOfClusteringPosting(),
+                        listOfCluster.get(j).getCenter().getListOfClusteringPosting());
+                DocumentToClusterSimilarity simDoc
+                        = new DocumentToClusterSimilarity(sim, listOfCluster.get(j));
+                listOfSimilarity.add(simDoc);
+            }
+            // sorting similarity
+            Collections.sort(listOfSimilarity);
+            // asumsi sorting descending , similarity terurut dari besar ke kecil
+            // tetapkan document ke cluster dengan similarity terbesar
+            // anda juga bisa tetapkan dengan KNN
+            listOfSimilarity.get(0).getCluster().getMember().add(doc);
+        }
     }
 }
